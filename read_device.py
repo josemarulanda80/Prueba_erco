@@ -41,11 +41,9 @@ class ReadDevice:
                 parity=self._parity,
                 stopbits=self._stopbits,
             )
-            print("Connecting to slave")
             await client.connect()
 
             if client.connected:
-                print("Connected successfully")
                 return client
             else:
                 print("Failed to connect to the Modbus server")
@@ -60,7 +58,6 @@ class ReadDevice:
         if client is None:
             return
 
-        print("Gettintg data")
 
         try:
             if self._function == 3:
@@ -88,7 +85,6 @@ class ReadDevice:
     def __close_connection(self, client: pymodbus.client) -> None:
         try:
             if client is not None:
-                print("Closing connection")
                 client.close()
         except Exception as e:
             print(f"Exception in close_connection: {e}")

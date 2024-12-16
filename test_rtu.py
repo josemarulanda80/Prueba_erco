@@ -87,9 +87,9 @@ async def main() -> None:
         serial_settings = "COM2"  # Insert COM# port (Type hint: string)
         function = 4  # Insert function (Type hint: integer)
         address = 40035  # Insert initial address (Type hint: integer)
-        quantity = 1  # Insert quantity of registes (Type hint: integer)
-        slave_id = 1  # Insert slave_id (Type hint: integer)
-
+        quantity = 4  # Insert quantity of registes (Type hint: integer)
+        slave_id = 2  # Insert slave_id (Type hint: integer)
+        
         read_registers = await run_async_simple_client(
             port=serial_settings,
             function_code=function,

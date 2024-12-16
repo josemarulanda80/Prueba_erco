@@ -13,7 +13,7 @@ async def main() -> None:
         bytesize = 8
         parity = "E"
         stopbits = 1
-        modbusCliente = ReadDevice(
+        weather_station = ReadDevice(
             serial_settings=serial_settings,
             function=function,
             address=address,
@@ -25,7 +25,7 @@ async def main() -> None:
             stopbits=stopbits,
         )
 
-        read_registers = await modbusCliente.run_async_simple_client()
+        read_registers = await weather_station.run_async_simple_client()
         floats = [
             ReadDevice.decode_registers_to_floats(
                 [read_registers[i], read_registers[i + 1]]
@@ -34,7 +34,7 @@ async def main() -> None:
         ]
 
         print(f"Registerts: {read_registers}")
-        print(f"Irradiancia: {floats[0]}")
+        print(f"Irradiance: {floats[0]}")
         print(f"Temperature: {floats[1]}")
     except Exception as e:
         print(f"Exception in main: {e}")
