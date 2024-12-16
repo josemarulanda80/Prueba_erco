@@ -83,7 +83,7 @@ async def run_async_simple_client(
         close_connection(client=client)
 
 
-def decode_registers_to_floats(registers) -> float:
+def decode_registers_to_floats(registers: list) -> float:
 
     # The two 16-bit registers are joined together to form a 32-bit value and the order of the registers is reversed.
     combined = (registers[0] << 16) + registers[1]

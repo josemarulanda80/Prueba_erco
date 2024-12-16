@@ -30,6 +30,11 @@ class ReadDevice:
     async def __start_connection(
         self, framer=pymodbus.framer.ModbusRtuFramer
     ) -> pymodbus.client:
+        """
+        Internal function to initiate connection
+        to a device using modbus communication
+
+        """
         try:
             client = pymodbus.client.AsyncModbusSerialClient(
                 port=self._serial_settings,
@@ -53,11 +58,12 @@ class ReadDevice:
             return None
 
     async def run_async_simple_client(self) -> list:
-
+        """
+        Method for reading records
+        """
         client = await self.__start_connection()
         if client is None:
             return
-
 
         try:
             if self._function == 3:
@@ -82,6 +88,7 @@ class ReadDevice:
         finally:
             self.__close_connection(client=client)
 
+    # Close the connection to the device
     def __close_connection(self, client: pymodbus.client) -> None:
         try:
             if client is not None:
@@ -91,26 +98,33 @@ class ReadDevice:
 
     @staticmethod
     def decode_registers_to_floats(registers) -> float:
+        """
+        Static function that receives a list with two 16-bite registers
+        and returns a float.
+        - The two 16-bit registers are joined together to form a 32-bit value
+        - and the order of the registers is reversed.
+        - The 32-bit value is converted to a float using struct
+        - The number is limited to 3 decimal places.
+        """
 
-        # The two 16-bit registers are joined together to form a 32-bit value
-        # and the order of the registers is reversed.
         combined = (registers[0] << 16) + registers[1]
 
-        # The 32-bit value is converted to a float using struct
+        #
         value_float = struct.unpack("!f", struct.pack("!I", combined))[0]
-        # number rounded
+        #
         float_rounded = Decimal(value_float).quantize(
             Decimal("0.001"), rounding=ROUND_DOWN
         )
         return float_rounded
 
 
-# It is a good practice to include getters and setters
-# to ensure controlled access to the attributes of a class. However,
-# since in this case the attributes will not be accessed or modified during
-# the execution of the application,
-# I have decided to comment them out.
-
+"""
+It is a good practice to include getters and setters
+to ensure controlled access to the attributes of a class. However,
+since in this case the attributes will not be accessed or modified during
+the execution of the application,
+I have decided to comment them out.
+"""
 # # Getters
 # @property
 # def serial_settings(self):
