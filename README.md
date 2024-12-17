@@ -144,7 +144,7 @@ La función `join_process` ejecuta múltiples tareas asíncronas en paralelo par
 Ejecuta el proceso principal de lectura en bucle hasta que se detenga manualmente.
 La función main() es el punto de entrada del programa. Llama a join_process() para iniciar la ejecución continua de la lectura de los registros de los dispositivos.
 
-Si todo funciona correctamente, se podra ver la información de interes por consola cada 5 segundos, la salida en la consola es la siguiente:
+Si todo funciona correctamente, se podra ver la información de interes por consola cada 5 segundos, dicha información puede ser usada para realilzar mejoras en el Sistema de Solar Fotovoltaico (SSFV), la salida en la consola es la siguiente:
 
 
 <p align="center">
