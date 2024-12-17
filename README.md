@@ -3,7 +3,9 @@
 <h3 align="center">Sistema de visualización de datos por consola
 </h3>
 
-<center><img  align="center" src="./resources/logo.png"></center>
+<p align="center">
+<img  align="center" src="./resources/logo.png">
+</p>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -47,8 +49,9 @@ El proyecto contiene un script principal llamado **`main_efficiency.py`**, el cu
 - Importa la librería **asyncio** para la ejecución de operaciones asíncronas.
 - Importa la clase **`ReadDevice`**, que proporciona la funcionalidad necesaria para leer registros desde los dispositivos mediante **Modbus**.
 
-<center><img  align="center" src="./resources/imports.png"></center>
-
+<p align="center">
+<img  align="center" src="./resources/imports.png"></center>
+</p>
 
 La aplicación permite la conexión simultanea a 3 dispositivos y obtiene los siguientes datos:
 1. **PAC3200**: Dato de la energia activa del analizador de redes.
@@ -144,9 +147,10 @@ La función main() es el punto de entrada del programa. Llama a join_process() p
 Si todo funciona correctamente, se podra ver la información de interes por consola cada 5 segundos, la salida en la consola es la siguiente:
 
 
-<center><img  align="center" src="./resources/consola.png"></center>
+<p align="center">
+<img  align="center" src="./resources/consola.png"></center>
 
-
+</p>
 <p id="requirement">
 </p>
 
