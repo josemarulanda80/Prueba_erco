@@ -2,7 +2,7 @@
 </h1>
 <h3 align="center">Sistema de visualización de datos por consola
 </h3>
-<Center><img  align="center" src="./resources/logo.PNG"></Center>
+<Center><img  align="center" src="./resources/logo.png"></Center>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -46,7 +46,7 @@ El proyecto contiene un script principal llamado **`main_efficiency.py`**, el cu
 - Importa la librería **asyncio** para la ejecución de operaciones asíncronas.
 - Importa la clase **`ReadDevice`**, que proporciona la funcionalidad necesaria para leer registros desde los dispositivos mediante **Modbus**.
 
-<Center><img  align="center" src="./resources/imports.PNG"></Center>
+<Center><img  align="center" src="./resources/imports.png"></Center>
 
 
 La aplicación permite la conexión simultanea a 3 dispositivos y obtiene los siguientes datos:
@@ -143,7 +143,7 @@ La función main() es el punto de entrada del programa. Llama a join_process() p
 Si todo funciona correctamente, se podra ver la información de interes por consola cada 5 segundos, la salida en la consola es la siguiente:
 
 
-<Center><img  align="center" src="./resources/consola.PNG"></Center>
+<Center><img  align="center" src="./resources/consola.png"></Center>
 
 
 <p id="requirement">
