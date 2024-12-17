@@ -2,7 +2,7 @@ import asyncio
 from read_device import ReadDevice
 
 
-async def read_and_decode_register_floats(
+async def show_information_register(
     serial_port,
     function,
     address,
@@ -50,7 +50,8 @@ async def main():
     """
     try:
         await asyncio.gather(
-            read_and_decode_register_floats(
+            # Connection to Huawei_inverter
+            show_information_register(
                 serial_port="COM4",
                 function=4,
                 address=30000,
@@ -63,7 +64,8 @@ async def main():
                 label="Generation_Accum",
                 float_index=0,
             ),
-            read_and_decode_register_floats(
+            # Connection to pac3200
+            show_information_register(
                 serial_port="COM2",
                 function=4,
                 address=1,

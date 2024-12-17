@@ -2,7 +2,7 @@ import asyncio
 from read_device import ReadDevice
 
 
-async def read_and_decode_register_floats(
+async def show_information_register(
     serial_port,
     function,
     address,
@@ -14,10 +14,10 @@ async def read_and_decode_register_floats(
     stopbits,
     label,
     float_index,
+    decode_floats=True,
 ):
     """
-    Generic function that reads and decodes Modbus registers
-    from a specific device, converting the registers into float values.
+    Reads Modbus registers from a specific device and decodes them.
     """
     try:
         device = ReadDevice(
@@ -33,66 +33,35 @@ async def read_and_decode_register_floats(
         )
 
         registers = await device.run_async_simple_client()
-        floats = [
-            ReadDevice.decode_registers_to_floats(
-                [registers[i], registers[i + 1]])
-            for i in range(0, len(registers), 2)
-        ]
 
-        print(f"{label}: {floats[float_index]}")
+        if decode_floats:
+            values = [
+                ReadDevice.decode_registers_to_floats([registers[i], registers[i + 1]])
+                for i in range(0, len(registers), 2)
+            ]
+        else:
+            values = registers  # Directly use raw registers if no decoding is needed
 
-    except Exception as e:
+        print(f"{label}: {values[float_index]}")
+
+    except (ConnectionError, asyncio.TimeoutError) as e:
         print(f"Error reading {label}: {e}")
-
-
-async def read_and_decode_register_integers() -> None:
-    """
-    Function that reads Modbus registers
-    from a specific device.
-    """
-    try:
-        serial_settings = "COM6"
-        function = 4
-        address = 40035
-        quantity = 4
-        slave_id = 2
-        baudrate = 9600
-        bytesize = 8
-        parity = "E"
-        stopbits = 1
-        huawei_inverter = ReadDevice(
-            serial_settings=serial_settings,
-            function=function,
-            address=address,
-            quantity=quantity,
-            slave_id=slave_id,
-            baudrate=baudrate,
-            bytesize=bytesize,
-            parity=parity,
-            stopbits=stopbits,
-        )
-        read_registers = await huawei_inverter.run_async_simple_client()
-        floats = [
-            ReadDevice.decode_registers_to_floats(
-                [read_registers[i], read_registers[i + 1]]
-            )
-            for i in range(0, len(read_registers), 2)
-        ]
-
-        print(f"Irradiance: {floats[0]}")
     except Exception as e:
-        print(f"Exception: {e}")
+        print(f"Unexpected error reading {label}: {e}")
 
 
 async def join_process() -> None:
     """
-    Function to execute three asynchronous functions
-    in parallel at 5-second intervals, printing one
-    point every second while the functions are not executed.
+    Executes three asynchronous functions in parallel, checking every second.
+
+    This function gathers tasks for reading and decoding registers from multiple devices
+    and processes them asynchronously.
     """
     while True:
+        # Define tasks to run asynchronously
         await asyncio.gather(
-            read_and_decode_register_floats(
+            # Connection to Huawei_inverter
+            show_information_register(
                 serial_port="COM4",
                 function=4,
                 address=30000,
@@ -105,7 +74,8 @@ async def join_process() -> None:
                 label="Generation_Accum",
                 float_index=0,
             ),
-            read_and_decode_register_floats(
+            # Connection to pac3200
+            show_information_register(
                 serial_port="COM2",
                 function=4,
                 address=1,
@@ -118,24 +88,42 @@ async def join_process() -> None:
                 label="Active_Power",
                 float_index=1,
             ),
-            read_and_decode_register_integers(),
+            # Connection to monitoring station
+            show_information_register(
+                serial_port="COM6",
+                function=4,
+                address=40035,
+                quantity=4,
+                slave_id=2,
+                baudrate=9600,
+                bytesize=8,
+                parity="E",
+                stopbits=1,
+                label="Irradiance",
+                float_index=0,
+                decode_floats=False,  # Example where decoding is not needed
+            ),
         )
+
+        # Execute all tasks concurrently
+
+        # Print a dot to indicate that tasks are running every second
         for _ in range(4):
             print(".")
             await asyncio.sleep(1)
 
+        # Wait for 1 second before re-running
         await asyncio.sleep(1)
 
 
 async def main():
     """
-    Function to execute tasks repeatedly
+    Main function to execute tasks repeatedly in an asynchronous loop.
     """
     await join_process()
 
 
 if __name__ == "__main__":
-    # Executes the asyncio event loop
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
